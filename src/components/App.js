@@ -29,6 +29,12 @@ function App() {
         setIsAddPlacePopupOpen(true)
     }
 
+    function closeAllPopups() {
+        setIsEditAvatarPopupOpen(false)
+        setIsEditProfilePopupOpen(false)
+        setIsAddPlacePopupOpen(false)
+      }
+
     return (
 
         <body className="page">
@@ -43,11 +49,11 @@ function App() {
 
             <Footer />
 
-            <EditProfilePopup isOpen={isEditProfilePopupOpen}/>
+            <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}/>
 
-            <AddPlacePopup isOpen={isAddPlacePopupOpen}/>
+            <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}/>
 
-            <EditAvatarPopup isOpen={isEditAvatarPopupOpen}/>
+            <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}/>
 
             <ImagePopup />
 
