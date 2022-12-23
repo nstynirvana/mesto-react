@@ -7,6 +7,7 @@ import ImagePopup from './ImagePopup';
 import AddPlacePopup from './AddPlacePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
+import api from '../utils/api';
 
 
 function App() {
@@ -16,6 +17,8 @@ function App() {
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
 
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+
+    const [currentUser, setCurrentUser] = React.useState({});
 
     function handleEditAvatarClick() {
         setIsEditAvatarPopupOpen(true);
@@ -33,8 +36,15 @@ function App() {
         setIsEditAvatarPopupOpen(false)
         setIsEditProfilePopupOpen(false)
         setIsAddPlacePopupOpen(false)
-      }
+    }
 
+    React.useEffect(() => {
+        api.getUserInfo()
+            .then((userData) => {
+                setCurrentUser(userData);
+            })
+            .catch(err => console.log(err))
+    }, [])
     return (
 
         <body className="page">
@@ -49,11 +59,11 @@ function App() {
 
             <Footer />
 
-            <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}/>
+            <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} name='userName' />
 
-            <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}/>
+            <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} name='userDescription' />
 
-            <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}/>
+            <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} name='userAvatar' />
 
             <ImagePopup />
 

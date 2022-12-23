@@ -2,15 +2,24 @@ import React from 'react';
 
 function Main(props) {
 
-    // const handleEditAvatarClick = (evt) => {
-    //     document.querySelector('.popup_edit-avatar').classList.add('.popup_opened');
-    // }
-    // const handleEditProfileClick = (evt) => {
-    //     document.querySelector('.popup_edit').classList.add('.popup_opened');
-    // }
-    // const handleAddPlaceClick = (evt) => {
-    //     document.querySelector('.popup_add').classList.add('.popup_opened');
-    // }
+    const [userName, setUserName] = React.useState('');
+    const [userDescription, setUserDescription] = React.useState('');
+    const [userAvatar, setUserAvatar] = React.useState('');
+
+    React.useEffect(() => {
+        Promise.all([
+            api.getInitialUsers(),
+        ])
+            .then(([cards, infoUsers]) => {
+                setUserName(infoUsers.name);
+                setUserDescription(infoUsers.about);
+                setUserAvatar(infoUsers.avatar);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+
+    }, [])
 
     return (
         <>
