@@ -7,7 +7,6 @@ import ImagePopup from './ImagePopup';
 import AddPlacePopup from './AddPlacePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
-import api from '../utils/api';
 
 
 function App() {
@@ -17,8 +16,6 @@ function App() {
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
 
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-
-    const [currentUser, setCurrentUser] = React.useState({});
 
     function handleEditAvatarClick() {
         setIsEditAvatarPopupOpen(true);
@@ -38,13 +35,6 @@ function App() {
         setIsAddPlacePopupOpen(false)
     }
 
-    React.useEffect(() => {
-        api.getUserInfo()
-            .then((userData) => {
-                setCurrentUser(userData);
-            })
-            .catch(err => console.log(err))
-    }, [])
     return (
 
         <body className="page">
@@ -74,23 +64,6 @@ function App() {
                     <button aria-label="Сохранить" id="consent" className="popup__submit-button">Да</button>
                 </div>
             </div>
-
-            <template id="template-element" >
-                <div className="element">
-                    <img className="element__image" alt="name" />
-                    <button type="button" className="element__delete-button hidden" name="delete" value="delete"></button>
-                    <div className=" element__info">
-                        <h2 className="element__title"></h2>
-                        <div className="element__container-likes">
-                            <button aria-label="Лайк" type="button" className="element__like-button" name="like"
-                                value="like"></button>
-                            <p className="element__sum-likes"></p>
-                        </div>
-                    </div>
-                </div>
-            </template>
-
-
         </body>
     );
 }
