@@ -10,18 +10,18 @@ function Main(props) {
     const [cards, setCards] = React.useState([]);
 
     React.useEffect(() => {
-        Promise.all([api.getInitialCards(), api.getInitialUsers()])
-            .then(([cards, infoUsers]) => {
-                setUserName(infoUsers.name);
-                setUserDescription(infoUsers.about);
-                setUserAvatar(infoUsers.avatar);
-                setCards(cards.map((card) => ({
-                    img: card.link,
-                    title: card.name,
-                    like: card.likes.length,
-                    idCard: card._id
-                })
-                ))
+        api.getUserInfo()
+            .then((res) => {
+                setUserName(res.name);
+                setUserDescription(res.about);
+                setUserAvatar(res.avatar);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+        api.getInitialCards()
+            .then(res => {
+                setCards(res);
             })
             .catch((err) => {
                 console.log(err);
@@ -51,9 +51,7 @@ function Main(props) {
 
             </main>
 
-            <section className="card">{cards.map(({ ...card }) =>
-                <Card onCardClick={props.onCardClick} card={card} key={card.idCard} {...card} />
-            )}
+            <section className="card">{cards.map((item) => <Card card={item} />)}
             </section>
         </>
     );
