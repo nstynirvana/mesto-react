@@ -7,7 +7,7 @@ import ImagePopup from './ImagePopup';
 import AddPlacePopup from './AddPlacePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
-
+import api from '../utils/api';
 
 function App() {
 
@@ -18,6 +18,28 @@ function App() {
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
 
     const [selectedCard, setSelectedCard] = React.useState(null);
+
+    const [userData, setUserData] = React.useState({});
+
+    const [cards, setCards] = React.useState([]);
+
+    React.useEffect(() => {
+        api.getUserInfo()
+            .then((res) => {
+                setUserData(res);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+        api.getInitialCards()
+            .then((cards) => {
+                setCards(cards);
+                
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    }, [])
 
     function handleEditAvatarClick() {
         setIsEditAvatarPopupOpen(true);
@@ -53,6 +75,10 @@ function App() {
                 onEditProfile={handleEditProfileClick}
                 onAddPlace={handleAddPlaceClick}
                 onCardClick={handleCardClick}
+                userAvatar={userData.avatar}
+                userDescription={userData.about}
+                userName={userData.name}
+                cards={cards}
             />
 
             <Footer />
@@ -63,7 +89,10 @@ function App() {
 
             <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} name='userAvatar' />
 
-            <ImagePopup />
+            <ImagePopup
+                card={selectedCard}
+                onClose={closeAllPopups}
+            />
 
             <div className="popup popup_delete">
                 <div className="popup__content">
