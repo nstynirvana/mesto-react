@@ -66,7 +66,7 @@ function App() {
     
     return (
 
-        <body className="page">
+        <div className="page">
 
             <Header />
 
@@ -101,7 +101,7 @@ function App() {
                     <button aria-label="Сохранить" id="consent" className="popup__submit-button">Да</button>
                 </div>
             </div>
-        </body>
+        </div>
     );
 }
 
