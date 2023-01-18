@@ -63,7 +63,7 @@ function App() {
         setIsAddPlacePopupOpen(false)
         setSelectedCard(null);
     }
-
+    
     return (
 
         <body className="page">
@@ -79,6 +79,7 @@ function App() {
                 userDescription={userData.about}
                 userName={userData.name}
                 cards={cards}
+                
             />
 
             <Footer />

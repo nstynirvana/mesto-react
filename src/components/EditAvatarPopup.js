@@ -9,7 +9,7 @@ function EditAvatarPopup(props) {
     return (
         <>
             <PopupWithForm name="formEditAvatar" title='Обновить аватар' isOpen={props.isOpen} onClose={props.onClose} noValidate>
-                <input type="url" className="popup__text popup__text_type_image" required id="profile-avatar-link" placeholder="Ссылка на картинку" name="avatar" value="" />
+                <input type="url" className="popup__text popup__text_type_image" required id="profile-avatar-link" placeholder="Ссылка на картинку" name="avatar"/>
                 <span className="error"></span>
             </PopupWithForm>
         </>
