@@ -17,7 +17,7 @@ function App() {
 
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
 
-    const [selectedCard, setSelectedCard] = React.useState(null);
+    const [selectedCard, setSelectedCard] = React.useState(false);
 
     const [userData, setUserData] = React.useState({});
 
@@ -31,7 +31,7 @@ function App() {
             .catch((err) => {
                 console.log(err);
             })
-        api.getInitialCards()
+        api.getAllCards()
             .then((cards) => {
                 setCards(cards);
                 
@@ -61,7 +61,7 @@ function App() {
         setIsEditAvatarPopupOpen(false)
         setIsEditProfilePopupOpen(false)
         setIsAddPlacePopupOpen(false)
-        setSelectedCard(null);
+        setSelectedCard(false);
     }
     
     return (
@@ -79,7 +79,6 @@ function App() {
                 userDescription={userData.about}
                 userName={userData.name}
                 cards={cards}
-                
             />
 
             <Footer />

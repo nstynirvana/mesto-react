@@ -1,13 +1,14 @@
 import React from 'react';
 
 function Card(props) {
-
+   
     const handleClick = () => {
         props.onCardClick(props.card);
     };  
+
     return (
         <>
-            <div className="card">
+            <div className="element">
                 <img onClick={handleClick} className="element__image" src={props.card.link} alt={props.card.title} />
                 <button type="button" className="element__delete-button hidden" name="delete" value="delete"></button>
                 <div className=" element__info">

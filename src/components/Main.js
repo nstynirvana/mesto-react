@@ -2,7 +2,7 @@ import React from 'react';
 import Card from './Card';
 
 function Main(props) {
-
+    
     return (
         <>
             <main className="content">
@@ -22,15 +22,12 @@ function Main(props) {
                 </section>
 
                 <section className="elements">
+                    {props.cards.map((card) => (
+                    <Card card={card} key={card._id} onCardClick={props.onCardClick} />
+                ))}
                 </section>
 
             </main>
-
-            <section className="card">
-            {props.cards.map((card) => (
-                    <Card card={card} key={card._id} onCardClick={props.onCardClick} />
-                ))}
-            </section>
         </>
     );
 }
