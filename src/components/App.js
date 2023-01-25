@@ -8,6 +8,7 @@ import AddPlacePopup from './AddPlacePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import api from '../utils/api';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function App() {
 
@@ -19,27 +20,46 @@ function App() {
 
     const [selectedCard, setSelectedCard] = React.useState(false);
 
-    const [userData, setUserData] = React.useState({});
-
     const [cards, setCards] = React.useState([]);
 
+    const [currentUser, setCurrentUser] = React.useState({});
+
     React.useEffect(() => {
-        api.getUserInfo()
-            .then((res) => {
-                setUserData(res);
-            })
-            .catch((err) => {
-                console.log(err);
-            })
         api.getAllCards()
             .then((cards) => {
                 setCards(cards);
-                
+
             })
             .catch((err) => {
                 console.log(err);
             })
     }, [])
+
+    React.useEffect(() => {
+        api.getUserInfo()
+            .then((userData) => {
+                setCurrentUser(userData);
+            })
+            .catch(err => console.log(err))
+    }, [])
+
+    function handleCardLike(card) {
+        const isLiked = card.likes.some(element => element._id === currentUser._id);
+        api.setCardLike(card._id, !isLiked)
+            .then((newCard) => {
+                setCards((state) => state.map((element) => element._id === card._id ? newCard : element));
+            })
+            .catch(err => console.log(err))
+    }
+
+    function handleCardDelete(card) {
+        api.deleteCard(card._id)
+            .then(() => {
+                setCards((state) => state.filter(element => element._id !== card._id));
+                closeAllPopups()
+            })
+            .catch(err => console.log(err))
+    }
 
     function handleEditAvatarClick() {
         setIsEditAvatarPopupOpen(true);
@@ -63,44 +83,48 @@ function App() {
         setIsAddPlacePopupOpen(false)
         setSelectedCard(false);
     }
-    
+
     return (
 
         <div className="page">
 
-            <Header />
+            <CurrentUserContext.Provider value={currentUser}>
 
-            <Main
-                onEditAvatar={handleEditAvatarClick}
-                onEditProfile={handleEditProfileClick}
-                onAddPlace={handleAddPlaceClick}
-                onCardClick={handleCardClick}
-                userAvatar={userData.avatar}
-                userDescription={userData.about}
-                userName={userData.name}
-                cards={cards}
-            />
+                <Header />
 
-            <Footer />
+                <Main
+                    onEditAvatar={handleEditAvatarClick}
+                    onEditProfile={handleEditProfileClick}
+                    onAddPlace={handleAddPlaceClick}
+                    onCardClick={handleCardClick}
+                    cards={cards}
+                    onCardLike={handleCardLike}
+                    onBtnDelete={handleCardDelete}
+                />
 
-            <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} name='userName' />
+                <Footer />
 
-            <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} name='userDescription' />
+                <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} name='userName' />
 
-            <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} name='userAvatar' />
+                <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} name='userDescription' />
 
-            <ImagePopup
-                card={selectedCard}
-                onClose={closeAllPopups}
-            />
+                <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} name='userAvatar' />
 
-            <div className="popup popup_delete">
-                <div className="popup__content">
-                    <button aria-label="Закрыть" id="editBtnDelete" type="button" className="popup__close-button popup__close-button_edit"></button>
-                    <h2 className="popup__heading">Вы уверены?</h2>
-                    <button aria-label="Сохранить" id="consent" className="popup__submit-button">Да</button>
+                <ImagePopup
+                    card={selectedCard}
+                    onClose={closeAllPopups}
+                />
+
+                <div className="popup popup_delete">
+                    <div className="popup__content">
+                        <button aria-label="Закрыть" id="editBtnDelete" type="button" className="popup__close-button popup__close-button_edit"></button>
+                        <h2 className="popup__heading">Вы уверены?</h2>
+                        <button aria-label="Сохранить" id="consent" className="popup__submit-button">Да</button>
+                    </div>
                 </div>
-            </div>
+
+            </CurrentUserContext.Provider>
+
         </div>
     );
 }
