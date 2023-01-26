@@ -44,10 +44,15 @@ function App() {
     }, [])
 
     function handleCardLike(card) {
-        const isLiked = card.likes.some(element => element._id === currentUser._id);
+        const isLiked = card.likes.some(i => i._id === currentUser._id);
         api.setCardLike(card._id, !isLiked)
             .then((newCard) => {
-                setCards((state) => state.map((element) => element._id === card._id ? newCard : element));
+                setCards((state) => state.map((i) => i._id === card._id ? newCard : i));
+            })
+            .catch(err => console.log(err));
+        api.deleteCardLike(card._id, isLiked)
+            .then((newCard) => {
+                setCards((state) => state.map((i) => i._id === card._id ? newCard : i));
             })
             .catch(err => console.log(err))
     }
@@ -55,7 +60,7 @@ function App() {
     function handleCardDelete(card) {
         api.deleteCard(card._id)
             .then(() => {
-                setCards((state) => state.filter(element => element._id !== card._id));
+                setCards((state) => state.filter(i => i._id !== card._id));
                 closeAllPopups()
             })
             .catch(err => console.log(err))
@@ -76,6 +81,17 @@ function App() {
     const handleCardClick = (card) => {
         setSelectedCard(card);
     }
+
+    const handleUpdateUser = ({ name, about }) => {
+        api.editUserInfo(name, about)
+            .then((updatedUserInfo) => {
+                setCurrentUser(updatedUserInfo);
+                closeAllPopups();
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    };
 
     function closeAllPopups() {
         setIsEditAvatarPopupOpen(false)
@@ -104,11 +120,11 @@ function App() {
 
                 <Footer />
 
-                <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} name='userName' />
+                <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
 
-                <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} name='userDescription' />
+                <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} />
 
-                <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} name='userAvatar' />
+                <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />
 
                 <ImagePopup
                     card={selectedCard}
