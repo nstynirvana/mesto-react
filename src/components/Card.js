@@ -22,7 +22,7 @@ function Card(props) {
 
     const isOwn = props.card.owner._id === currentUserData._id;
 
-    const cardDeleteButtonClassName = (`element__delete-button ${isOwn ? 'element__delete-button_visible' : ''}`);
+    const cardDeleteButtonClassName =`element__delete-button`;
 
     const isLiked = props.card.likes.some(i => i._id === currentUserData._id);
 
@@ -30,10 +30,12 @@ function Card(props) {
         `element__like-button ${isLiked && 'element__like-button_active'}`
     );
 
+    const DeleteBtn = isOwn ? (<button type="button" onClick={handleDeleteClick} className={cardDeleteButtonClassName} name="delete" value="delete"></button>) : (' ')
+
     return (
         <div className="element">
             <img onClick={handleClick} className="element__image" src={props.card.link} alt={props.card.title} />
-            <button type="button" onClick={handleDeleteClick} className={cardDeleteButtonClassName} name="delete" value="delete"></button>
+            {DeleteBtn}
             <div className=" element__info">
                 <h2 className="element__title">{props.card.name}</h2>
                 <div className="element__container-likes">

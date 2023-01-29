@@ -45,16 +45,20 @@ function App() {
 
     function handleCardLike(card) {
         const isLiked = card.likes.some(i => i._id === currentUser._id);
-        api.setCardLike(card._id, !isLiked)
+        if (!isLiked) {
+        api.setCardLike(card._id)
             .then((newCard) => {
                 setCards((state) => state.map((i) => i._id === card._id ? newCard : i));
             })
             .catch(err => console.log(err));
-        api.deleteCardLike(card._id, isLiked)
+        }
+        else {
+        api.deleteCardLike(card._id)
             .then((newCard) => {
                 setCards((state) => state.map((i) => i._id === card._id ? newCard : i));
             })
             .catch(err => console.log(err))
+        }
     }
 
     function handleCardDelete(card) {
