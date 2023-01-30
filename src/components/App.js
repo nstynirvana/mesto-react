@@ -46,18 +46,18 @@ function App() {
     function handleCardLike(card) {
         const isLiked = card.likes.some(i => i._id === currentUser._id);
         if (!isLiked) {
-        api.setCardLike(card._id)
-            .then((newCard) => {
-                setCards((state) => state.map((i) => i._id === card._id ? newCard : i));
-            })
-            .catch(err => console.log(err));
+            api.setCardLike(card._id)
+                .then((newCard) => {
+                    setCards((state) => state.map((i) => i._id === card._id ? newCard : i));
+                })
+                .catch(err => console.log(err));
         }
         else {
-        api.deleteCardLike(card._id)
-            .then((newCard) => {
-                setCards((state) => state.map((i) => i._id === card._id ? newCard : i));
-            })
-            .catch(err => console.log(err))
+            api.deleteCardLike(card._id)
+                .then((newCard) => {
+                    setCards((state) => state.map((i) => i._id === card._id ? newCard : i));
+                })
+                .catch(err => console.log(err))
         }
     }
 
@@ -88,14 +88,35 @@ function App() {
 
     const handleUpdateUser = ({ name, about }) => {
         api.editUserInfo(name, about)
-            .then((updatedUserInfo) => {
-                setCurrentUser(updatedUserInfo);
+            .then((userData) => {
+                setCurrentUser(userData);
                 closeAllPopups();
             })
             .catch((err) => {
                 console.error(err);
             });
     };
+
+    const handleUpdateAvatar = ({ avatar, clearAvatar }) => {
+        api.editUserAvatar(avatar)
+            .then(() => {
+                setCurrentUser({ ...currentUser, avatar: avatar });
+                closeAllPopups();
+                clearAvatar();
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    };
+
+    function handleAddPlaceSubmit(card) {
+        api.addNewCard(card)
+        .then((newCard) => {
+          setCards([newCard, ...cards]);
+          closeAllPopups();
+        })
+        .catch(err => console.log(err))
+      }
 
     function closeAllPopups() {
         setIsEditAvatarPopupOpen(false)
@@ -126,9 +147,9 @@ function App() {
 
                 <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
 
-                <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} />
+                <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}  onAddPlace={handleAddPlaceSubmit}/>
 
-                <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />
+                <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/>
 
                 <ImagePopup
                     card={selectedCard}

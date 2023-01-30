@@ -19,14 +19,14 @@ function Main(props) {
                             <h1 className="profile__title">{currentUserData.name}</h1>
                             <button onClick={props.onEditProfile} aria-label="Редактировать" type="button" className="profile__edit-button" name="edit" value="edit"></button>
                         </div>
-                        <p className="profile__subtitle">{currentUserData.about}</p>
+                        <p className="profile__subtitle">{props.userDescription}</p>
                     </div>
                     <button onClick={props.onAddPlace} aria-label="Добавить" type="button" className="profile__add-button" name="add"></button>
                 </section>
 
                 <section className="elements">
                     {props.cards.map((card) => (
-                    <Card card={card} key={card._id} onCardClick={props.onCardClick} onCardLike={props.onCardLike}/>
+                    <Card card={card} key={card._id} onCardClick={props.onCardClick} />
                 ))}
                 </section>
 
