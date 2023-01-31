@@ -4,16 +4,17 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function Card(props) {
 
-    function handleLikeClick() {
-        props.onCardLike(props.card)
-    }
+    const handleLikeClick = () => {
+        props.onCardLike(props.card);
+    };
 
-    function handleDeleteClick() {
-        props.onBtnDelete()
+    const handleDeleteClick = () => {
+        props.onBtnDelete(props.card)
         props.onCardClick({
             _id: props.card._id,
         })
-    }
+    };
+
     const handleClick = () => {
         props.onCardClick(props.card);
     };

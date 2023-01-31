@@ -40,6 +40,7 @@ class Api {
     }
     // Добавляем новую карточку
     addNewCard(cardInfo) {
+        console.log(cardInfo)
         return fetch(`${this._url}/cards`, {
             method: 'POST',
             headers: this._headers,
