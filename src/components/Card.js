@@ -9,10 +9,7 @@ function Card(props) {
     };
 
     const handleDeleteClick = () => {
-        props.onBtnDelete(props.card)
-        props.onCardClick({
-            _id: props.card._id,
-        })
+        props.onBtnDelete(props.card);
     };
 
     const handleClick = () => {

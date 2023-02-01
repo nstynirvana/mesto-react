@@ -1,5 +1,4 @@
 import React from 'react';
-import '../index.css';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -18,7 +17,7 @@ function App() {
 
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
 
-    const [selectedCard, setSelectedCard] = React.useState(false);
+    const [selectedCard, setSelectedCard] = React.useState({});
 
     const [cards, setCards] = React.useState([]);
 
